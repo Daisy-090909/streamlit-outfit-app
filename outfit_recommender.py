@@ -8,7 +8,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableLambda
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig, pipeline
 
 class OutfitRecommender:
     def __init__(self):
@@ -33,10 +33,17 @@ class OutfitRecommender:
         self.tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.2")
         self.tokenizer.pad_token = self.tokenizer.eos_token
         
+        quant_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_compute_dtype=torch.float16
+        )
+
         self.model = AutoModelForCausalLM.from_pretrained(
             "mistralai/Mistral-7B-Instruct-v0.2",
             device_map="auto",
-            torch_dtype=torch.float16
+            quantization_config=quant_config
         )
     
     def _setup_vector_store(self):
