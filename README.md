@@ -39,9 +39,9 @@ The model returns:
 
 ### Environment Variables
 Make sure to set the following in your .env file:
-HF_TOKEN=your_huggingface_token
-QDRANT_URL=https://your-qdrant-instance
-QDRANT_API_KEY=your_qdrant_api_key
+- HF_TOKEN=your_huggingface_token
+- QDRANT_URL=https://your-qdrant-instance
+- QDRANT_API_KEY=your_qdrant_api_key
 
 ## 🔍 Web App Preview
 
